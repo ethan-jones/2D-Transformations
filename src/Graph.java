@@ -125,7 +125,6 @@ public class Graph extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        //g2.translate(400.0, 400.0);
         g2.drawImage(canvas, null, null);
     }
 
@@ -242,7 +241,6 @@ public class Graph extends JPanel {
 
     public static void main(String[] args) {
 
-        Scanner input = new Scanner(System.in);
         int width = 800;
         int height = 800;
 

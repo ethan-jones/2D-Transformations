@@ -1,17 +1,17 @@
 public class Matrix {
     
-    public int M;             // number of rows
-    public int N;             // number of columns
-    public double[][] data;   // M-by-N array
+    public int M;             //number of rows
+    public int N;             //number of columns
+    public double[][] data;   //M-by-N array
 
-    // create M-by-N matrix of 0's
+    //create M-by-N matrix of 0's
     public Matrix(int M, int N) {
         this.M = M;
         this.N = N;
         data = new double[M][N];
     }
 
-    // create matrix based on 2d array
+    //create matrix based on 2d array
     public Matrix(double[][] data) {
         M = data.length;
         N = data[0].length;
@@ -21,33 +21,7 @@ public class Matrix {
                     this.data[i][j] = data[i][j];
     }
 
-    // copy constructor
-    //private Matrix(Matrix A) { this(A.data); }
-
-    // return C = A + B
-    public Matrix plus(Matrix B) {
-        Matrix A = this;
-        if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
-        Matrix C = new Matrix(M, N);
-        for (int i = 0; i < M; i++)
-            for (int j = 0; j < N; j++)
-                C.data[i][j] = A.data[i][j] + B.data[i][j];
-        return C;
-    }
-
-
-    // return C = A - B
-    public Matrix minus(Matrix B) {
-        Matrix A = this;
-        if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
-        Matrix C = new Matrix(M, N);
-        for (int i = 0; i < M; i++)
-            for (int j = 0; j < N; j++)
-                C.data[i][j] = A.data[i][j] - B.data[i][j];
-        return C;
-    }
-
-    // return C = A * B
+    //return C = A * B
     public Matrix times(Matrix B) {
         Matrix A = this;
         if (A.N != B.M) throw new RuntimeException("Illegal matrix dimensions.");
@@ -59,22 +33,26 @@ public class Matrix {
         return C;
     }
 
-    public void fillRows(int num) {
+    //fill all of the rows
+    public void fillRows(double num) {
         for (int i = 0; i < M; i++) {
             data[i][0] = num;
         }
     }
 
-    public void fillCols(int num) {
+    //fill of the cols
+    public void fillCols(double num) {
         for (int i = 0; i < N; i++) {
             data[0][i] = num;
         }
     }
 
+    //returns specific value in the matrix
     public double getValue(int row, int col) {
         return data[row][col];
     }
 
+    //basic toString method
     public String toString() {
         String str = "[ ";
         

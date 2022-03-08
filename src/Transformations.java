@@ -6,6 +6,7 @@ public final class Transformations {
         return 0;
     }
 
+    //translate by an x and y displacement
     public static Matrix basicTranslate(Matrix matrix, int x, int y) {
 
         double[][] translation = {{1, 0, 0},
@@ -25,6 +26,7 @@ public final class Transformations {
         return matrix;
     }
 
+    //scale by a given x and y factor
     public static Matrix basicScale(Matrix matrix, double x, double y) {
         double [][] temp = {{0, 0, 1}};
         Matrix coordinate;
@@ -43,10 +45,12 @@ public final class Transformations {
         return matrix;
     }
 
+    //a rotation around the origin (400, 400)
     public static Matrix basicRotate(Matrix matrix, double degrees) {
         return rotate(matrix, degrees, 400, 400);
     }
 
+    //scale by certain factors around a specific point
     public static Matrix scale(Matrix matrix, double Sx, double Sy, int Cx, int Cy) {
         Matrix coordinate;
         double[][] temp = {{0, 0, 1}};
@@ -74,6 +78,7 @@ public final class Transformations {
         return matrix;
     }
 
+    //rotation around a given point
     public static Matrix rotate(Matrix matrix, double degrees, int Cx, int Cy) {
         Matrix coordinate;
         double[][] temp = {{0, 0, 1}};
