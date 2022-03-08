@@ -11,21 +11,36 @@ public final class Transformations {
         double[][] translation = {{1, 0, 0},
                                {0, 1, 0},
                                {x, y, 1}}; 
+        double [][] temp = {{0, 0, 1}};
+        Matrix coordinate;
         Matrix transformation = new Matrix(translation);
-        double[][] temp = {{matrix.getValue(0, 0), matrix.getValue(1, 0), 1}};
-        Matrix coordinate = new Matrix(temp);
-        return coordinate.times(transformation);
+        for (int i = 0; i < matrix.N; i++) {
+            temp[0][0] = matrix.getValue(0, i);
+            temp[0][1] = matrix.getValue(1, i);
+            coordinate = new Matrix(temp);
+            coordinate = coordinate.times(transformation);
+            matrix.data[0][i] = coordinate.getValue(0, 0);
+            matrix.data[1][i] = coordinate.getValue(0, 1);
+        }
+        return matrix;
     }
 
-    public static Matrix basicScale(Matrix matrix, int x, int y) {
-        
+    public static Matrix basicScale(Matrix matrix, double x, double y) {
+        double [][] temp = {{0, 0, 1}};
+        Matrix coordinate;
         double[][] translation = {{x, 0, 0},
                                {0, y, 0},
                                {0, 0, 1}};
         Matrix transformation = new Matrix(translation);
-        double[][] temp = {{matrix.getValue(0, 0), matrix.getValue(1, 0), 1}};
-        Matrix coordinate = new Matrix(temp);
-        return coordinate.times(transformation);
+        for (int i = 0; i < matrix.N; i++) {
+            temp[0][0] = matrix.getValue(0, i);
+            temp[0][1] = matrix.getValue(1, i);
+            coordinate = new Matrix(temp);
+            coordinate = coordinate.times(transformation);
+            matrix.data[0][i] = coordinate.getValue(0, 0);
+            matrix.data[1][i] = coordinate.getValue(0, 1);
+        }
+        return matrix;
     }
 
     public static Matrix basicRotate(Matrix matrix, double degrees) {
@@ -33,7 +48,8 @@ public final class Transformations {
     }
 
     public static Matrix scale(Matrix matrix, int Sx, int Sy, int Cx, int Cy) {
-        
+        Matrix coordinate;
+        double[][] temp = {{0, 0, 1}};
         double[][] translate = {{1, 0, 0},
                                 {0, 1, 0},
                                 {(-1)*Cx, (-1)*Cy, 1}};
@@ -46,14 +62,21 @@ public final class Transformations {
                                    {0, 1, 0},
                                    {Cx, Cy, 1}};
         Matrix stepThree = new Matrix(translateTwo);
-        double[][] temp = {{matrix.getValue(0, 0), matrix.getValue(1, 0), 1}};
-        Matrix coordinate = new Matrix(temp);
+        for (int i = 0; i < matrix.N; i++) {
+            temp[0][0] = matrix.getValue(0, i);
+            temp[0][1] = matrix.getValue(1, i);
+            coordinate = new Matrix(temp);
+            coordinate = coordinate.times(stepOne).times(stepTwo).times(stepThree);
+            matrix.data[0][i] = coordinate.getValue(0, 0);
+            matrix.data[1][i] = coordinate.getValue(0, 1);
+        }
         
-        return coordinate.times(stepOne).times(stepTwo).times(stepThree);
+        return matrix;
     }
 
     public static Matrix rotate(Matrix matrix, double degrees, int Cx, int Cy) {
-
+        Matrix coordinate;
+        double[][] temp = {{0, 0, 1}};
         double[][] translate = {{1, 0, 0},
                                 {0, 1, 0},
                                 {(-1)*Cx, (-1)*Cy, 1}};
@@ -67,9 +90,15 @@ public final class Transformations {
                                    {0, 1, 0},
                                    {Cx, Cy, 1}};
         Matrix stepThree = new Matrix(translateTwo);
-        double[][] temp = {{matrix.getValue(0, 0), matrix.getValue(1, 0), 1}};
-        Matrix coordinate = new Matrix(temp);
-        return coordinate.times(stepOne).times(stepTwo).times(stepThree);
+        for (int i = 0; i < matrix.N; i++) {
+            temp[0][0] = matrix.getValue(0, i);
+            temp[0][1] = matrix.getValue(1, i);
+            coordinate = new Matrix(temp);
+            coordinate = coordinate.times(stepOne).times(stepTwo).times(stepThree);
+            matrix.data[0][i] = coordinate.getValue(0, 0);
+            matrix.data[1][i] = coordinate.getValue(0, 1);
+        }
+        return matrix;
     }
 
 }

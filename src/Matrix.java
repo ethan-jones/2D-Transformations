@@ -2,7 +2,7 @@ public class Matrix {
     
     public int M;             // number of rows
     public int N;             // number of columns
-    private double[][] data;   // M-by-N array
+    public double[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
     public Matrix(int M, int N) {

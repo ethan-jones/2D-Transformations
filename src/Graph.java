@@ -21,10 +21,13 @@ public class Graph extends JPanel {
         drawLine(Color.BLACK, 400, 0, 400, 799);
         drawLine(Color.BLACK, 0, 400, 799, 400);
 
-        drawLine(c, 100, 100, 200, 100);
-        drawLine(c, 200, 100, 200, 300);
-        drawLine(c, 200, 300, 100, 300);
-        drawLine(c, 100, 300, 100, 100);
+        Matrix test = inputLines("datalines.txt");
+        drawMatrix(c, test);
+        outputLines(test, test.N/2, "output.txt");
+        Matrix testResult = Transformations.basicScale(test, 2, 2);
+        drawMatrix(Color.BLUE, testResult);
+        outputLines(testResult, testResult.N/2, "output.txt");
+        
         
 
     } 
@@ -33,36 +36,39 @@ public class Graph extends JPanel {
         Matrix result;
         try {
             Scanner scanner = new Scanner(new File(dataLines));
-            int numPoints = 0;
+            int numLines = 0;
             if (scanner.hasNext()) {
-                numPoints = Integer.parseInt(scanner.nextLine());
+                numLines = Integer.parseInt(scanner.nextLine());
             }
             scanner.useDelimiter(" ");
-            System.out.println(numPoints);
-            double[][] data = new double[2][numPoints];
+            double[][] data = new double[2][numLines*2];
 
-            for (int i = 0; i < numPoints; i++) {
+            for (int i = 0; i < numLines*2; i++) {
                 data[0][i] = scanner.nextInt();
-            }
-            for (int i = 0; i < numPoints; i++) {
                 data[1][i] = scanner.nextInt();
             }
-            result = new Matrix(data);
-            System.out.println(result.toString());
-
             /*
-            for (int i = 0; i < data.length; i++) {
-                for (int j = 0; j < data[i].length; j++) {
-                    System.out.print(data[i][j] + ", ");
-                }
+            for (int i = 0; i < numLines*2; i++) {
+                data[1][i] = scanner.nextInt();
             }
             */
+            result = new Matrix(data);
             
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         
         return result;
+    }
+
+    public static void outputLines(Matrix matrix, int numLines, String fileName) {
+        try {
+            FileWriter writer = new FileWriter(fileName);
+            writer.write("Num Lines: " + numLines + "\n" + matrix.toString() + "\n\n");
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Dimension getPreferredSize() {
@@ -155,12 +161,19 @@ public class Graph extends JPanel {
         repaint();
     }
 
+    public void drawMatrix(Color c, Matrix matrix) {
+        for (int i = 0; i < matrix.N; i+=2) {
+            drawLine(c, (int)Math.floor(matrix.getValue(0, i)),
+                (int)Math.floor(matrix.getValue(1, i)),
+                (int)Math.floor(matrix.getValue(0, i+1)),
+                (int)Math.floor(matrix.getValue(1, i+1)));
+        }
+    }
+
     public static void main(String[] args) {
 
         int width = 800;
         int height = 800;
-
-        inputLines("datalines.txt");
 
         JFrame frame = new JFrame("2D Transformations");
 
