@@ -1,6 +1,3 @@
-import java.math.*;
-import java.util.Random;
-
 public final class Transformations {
 
     private Transformations(){}
@@ -32,14 +29,7 @@ public final class Transformations {
     }
 
     public static Matrix basicRotate(Matrix matrix, double degrees) {
-        double radian = Math.toRadians(degrees);
-        double[][] translation = {{Math.cos(radian), (-1) * Math.sin(radian), 0},
-                                  {Math.sin(radian), Math.cos(radian), 0},
-                                  {0, 0, 1}};
-        Matrix transformation = new Matrix(translation);
-        double[][] temp = {{matrix.getValue(0, 0), matrix.getValue(1, 0), 1}};
-        Matrix coordinate = new Matrix(temp);
-        return coordinate.times(transformation);
+        return rotate(matrix, degrees, 400, 400);
     }
 
     public static Matrix scale(Matrix matrix, int Sx, int Sy, int Cx, int Cy) {
@@ -62,8 +52,24 @@ public final class Transformations {
         return coordinate.times(stepOne).times(stepTwo).times(stepThree);
     }
 
-    public static Matrix rotate() {
-        return new Matrix(1,1);
+    public static Matrix rotate(Matrix matrix, double degrees, int Cx, int Cy) {
+
+        double[][] translate = {{1, 0, 0},
+                                {0, 1, 0},
+                                {(-1)*Cx, (-1)*Cy, 1}};
+        Matrix stepOne = new Matrix(translate);
+        double radian = Math.toRadians(degrees);
+        double[][] rotate = {{Math.cos(radian), (-1) * Math.sin(radian), 0},
+                                  {Math.sin(radian), Math.cos(radian), 0},
+                                  {0, 0, 1}};
+        Matrix stepTwo = new Matrix(rotate);
+        double[][] translateTwo = {{1, 0, 0},
+                                   {0, 1, 0},
+                                   {Cx, Cy, 1}};
+        Matrix stepThree = new Matrix(translateTwo);
+        double[][] temp = {{matrix.getValue(0, 0), matrix.getValue(1, 0), 1}};
+        Matrix coordinate = new Matrix(temp);
+        return coordinate.times(stepOne).times(stepTwo).times(stepThree);
     }
 
 }

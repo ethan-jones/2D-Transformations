@@ -75,4 +75,23 @@ public class Matrix {
         return data[row][col];
     }
 
+    public String toString() {
+        String str = "[ ";
+        
+        for (int i = 0; i < M; i++) {
+            if (i != 0) {
+                str += "[ ";
+            }
+            for (int j = 0; j < N; j++) {
+                str += data[i][j];
+                if (j == N-1) {
+                    str += " ]\n";
+                } else {
+                    str += ", ";
+                }
+            }
+        }
+        return str;
+    }
+
 }

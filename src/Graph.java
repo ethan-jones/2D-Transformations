@@ -5,20 +5,65 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-//import java.util.Scanner;
+import java.util.Scanner;
+import java.io.*;
 
 public class Graph extends JPanel {
     
     private BufferedImage canvas;
+    public Scanner reader = new Scanner(System.in);
 
     public Graph(int width, int height) {
+
+        Color c = Color.RED;
 
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         drawLine(Color.BLACK, 400, 0, 400, 799);
         drawLine(Color.BLACK, 0, 400, 799, 400);
+
+        drawLine(c, 100, 100, 200, 100);
+        drawLine(c, 200, 100, 200, 300);
+        drawLine(c, 200, 300, 100, 300);
+        drawLine(c, 100, 300, 100, 100);
         
 
     } 
+
+    public static Matrix inputLines(String dataLines) {
+        Matrix result;
+        try {
+            Scanner scanner = new Scanner(new File(dataLines));
+            int numPoints = 0;
+            if (scanner.hasNext()) {
+                numPoints = Integer.parseInt(scanner.nextLine());
+            }
+            scanner.useDelimiter(" ");
+            System.out.println(numPoints);
+            double[][] data = new double[2][numPoints];
+
+            for (int i = 0; i < numPoints; i++) {
+                data[0][i] = scanner.nextInt();
+            }
+            for (int i = 0; i < numPoints; i++) {
+                data[1][i] = scanner.nextInt();
+            }
+            result = new Matrix(data);
+            System.out.println(result.toString());
+
+            /*
+            for (int i = 0; i < data.length; i++) {
+                for (int j = 0; j < data[i].length; j++) {
+                    System.out.print(data[i][j] + ", ");
+                }
+            }
+            */
+            
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return result;
+    }
 
     public Dimension getPreferredSize() {
         return new Dimension(canvas.getWidth(), canvas.getHeight());
@@ -114,6 +159,8 @@ public class Graph extends JPanel {
 
         int width = 800;
         int height = 800;
+
+        inputLines("datalines.txt");
 
         JFrame frame = new JFrame("2D Transformations");
 
