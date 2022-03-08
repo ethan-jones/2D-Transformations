@@ -47,7 +47,7 @@ public final class Transformations {
         return rotate(matrix, degrees, 400, 400);
     }
 
-    public static Matrix scale(Matrix matrix, int Sx, int Sy, int Cx, int Cy) {
+    public static Matrix scale(Matrix matrix, double Sx, double Sy, int Cx, int Cy) {
         Matrix coordinate;
         double[][] temp = {{0, 0, 1}};
         double[][] translate = {{1, 0, 0},

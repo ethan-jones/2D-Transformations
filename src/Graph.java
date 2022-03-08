@@ -11,32 +11,84 @@ import java.io.*;
 public class Graph extends JPanel {
     
     private BufferedImage canvas;
-    public Scanner reader = new Scanner(System.in);
+    public int numLines;
 
     public Graph(int width, int height) {
 
-        Color c = Color.RED;
+        Scanner reader = new Scanner(System.in);
+        double Sx;
+        double Sy;
+        int Cx;
+        int Cy;
+        double degrees;
+        System.out.println("Please type a valid path for the line input file.");
+        String inputLines = reader.nextLine();
+        System.out.println("Please type a vaild path for the line output file.");
+        String outputLines = reader.nextLine();
+        Matrix matrix = inputLines(inputLines);
 
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         drawLine(Color.BLACK, 400, 0, 400, 799);
         drawLine(Color.BLACK, 0, 400, 799, 400);
+        drawMatrix(Color.RED, matrix);
 
-        Matrix test = inputLines("datalines.txt");
-        drawMatrix(c, test);
-        outputLines(test, test.N/2, "output.txt");
-        Matrix testResult = Transformations.basicScale(test, 2, 2);
-        drawMatrix(Color.BLUE, testResult);
-        outputLines(testResult, testResult.N/2, "output.txt");
-        
+        System.out.println("Would you like to use translation, basic scale, basic rotate, scale, or rotate? (1, 2, 3, 4, 5)");
+        int translation = reader.nextInt();
+        if (translation == 1) {
+            System.out.println("Please enter the x displacement.");
+            Cx = reader.nextInt();
+            System.out.println("Please enter the y displacement.");
+            Cy = reader.nextInt();
+            matrix = Transformations.basicTranslate(matrix, Cx, Cy);
+            drawMatrix(Color.BLUE, matrix);
+            outputLines(matrix, numLines, outputLines);
+        } else if (translation == 2) {
+            System.out.println("Please enter the x scaling factor.");
+            Sx = reader.nextDouble();
+            System.out.println("Please enter the y scaling factor.");
+            Sy = reader.nextDouble();
+            matrix = Transformations.basicScale(matrix, Sx, Sy);
+            drawMatrix(Color.BLUE, matrix);
+            outputLines(matrix, numLines, outputLines);
+        } else if (translation == 3) {
+            System.out.println("Please enter the angle.");
+            degrees = reader.nextDouble();
+            matrix = Transformations.basicRotate(matrix, degrees);
+            drawMatrix(Color.BLUE, matrix);
+            outputLines(matrix, numLines, outputLines);
+        } else if (translation == 4) {
+            System.out.println("Please enter the x scaling factor.");
+            Sx = reader.nextDouble();
+            System.out.println("Please enter the y scaling factor.");
+            Sy = reader.nextDouble();
+            System.out.println("Please enter the center of scale x value.");
+            Cx = reader.nextInt();
+            System.out.println("Please enter the center of scale y value.");
+            Cy = reader.nextInt();
+            matrix = Transformations.scale(matrix, Sx, Sy, Cx, Cy);
+            drawMatrix(Color.BLUE, matrix);
+            outputLines(matrix, numLines, outputLines);
+        } else {
+            System.out.println("Please enter the angle.");
+            degrees = reader.nextDouble();
+            System.out.println("Please enter the center of rotation x value.");
+            Cx = reader.nextInt();
+            System.out.println("Please enter the center of rotation y value.");
+            Cy = reader.nextInt();
+            matrix = Transformations.rotate(matrix, degrees, Cx, Cy);
+            drawMatrix(Color.BLUE, matrix);
+            outputLines(matrix, numLines, outputLines);
+        }
+        reader.close();
         
 
     } 
 
-    public static Matrix inputLines(String dataLines) {
+    public Matrix inputLines(String dataLines) {
         Matrix result;
         try {
             Scanner scanner = new Scanner(new File(dataLines));
-            int numLines = 0;
+            numLines = 0;
             if (scanner.hasNext()) {
                 numLines = Integer.parseInt(scanner.nextLine());
             }
@@ -47,11 +99,6 @@ public class Graph extends JPanel {
                 data[0][i] = scanner.nextInt();
                 data[1][i] = scanner.nextInt();
             }
-            /*
-            for (int i = 0; i < numLines*2; i++) {
-                data[1][i] = scanner.nextInt();
-            }
-            */
             result = new Matrix(data);
             
         } catch (FileNotFoundException e) {
@@ -61,7 +108,7 @@ public class Graph extends JPanel {
         return result;
     }
 
-    public static void outputLines(Matrix matrix, int numLines, String fileName) {
+    public void outputLines(Matrix matrix, int numLines, String fileName) {
         try {
             FileWriter writer = new FileWriter(fileName);
             writer.write("Num Lines: " + numLines + "\n" + matrix.toString() + "\n\n");
@@ -162,16 +209,40 @@ public class Graph extends JPanel {
     }
 
     public void drawMatrix(Color c, Matrix matrix) {
+        int x1;
+        int y1;
+        int x2;
+        int y2;
+
         for (int i = 0; i < matrix.N; i+=2) {
-            drawLine(c, (int)Math.floor(matrix.getValue(0, i)),
-                (int)Math.floor(matrix.getValue(1, i)),
-                (int)Math.floor(matrix.getValue(0, i+1)),
-                (int)Math.floor(matrix.getValue(1, i+1)));
+            x1 = (int)Math.floor(matrix.getValue(0, i));
+            y1 = (int)Math.floor(matrix.getValue(1, i));
+            x2 = (int)Math.floor(matrix.getValue(0, i+1));
+            y2 = (int)Math.floor(matrix.getValue(1, i+1));
+            if (x1 < 0 || x1 > 800) {
+                System.out.println("Error: Transformation causes out of bounds error.");
+                break;
+            }
+            if (x2 < 0 || x2 > 800) {
+                System.out.println("Error: Transformation causes out of bounds error.");
+                break;
+            }
+            if (y1 < 0 || y1 > 800) {
+                System.out.println("Error: Transformation causes out of bounds error.");
+                break;
+            }
+            if (y2 < 0 || y2 > 800) {
+                System.out.println("Error: Transformation causes out of bounds error.");
+                break;
+            }
+            
+            drawLine(c, x1, y1, x2, y2);
         }
     }
 
     public static void main(String[] args) {
 
+        Scanner input = new Scanner(System.in);
         int width = 800;
         int height = 800;
 
