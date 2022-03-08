@@ -16,6 +16,7 @@ public class Graph extends JPanel {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         drawLine(Color.BLACK, 400, 0, 400, 799);
         drawLine(Color.BLACK, 0, 400, 799, 400);
+        
 
     } 
 
@@ -26,6 +27,7 @@ public class Graph extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        //g2.translate(400.0, 400.0);
         g2.drawImage(canvas, null, null);
     }
 
